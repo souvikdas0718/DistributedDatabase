@@ -7,7 +7,6 @@ public class DistributedTransaction {
         String jdbcDriver = "com.mysql.jdbc.Driver";
         Connection localConnection = null;
         Connection localConnection2 = null;
-        Connection remoteConnection = null;
 
         try {
             Class.forName(jdbcDriver);
@@ -31,29 +30,15 @@ public class DistributedTransaction {
         } catch (Exception errorMessage) {
             System.out.println(errorMessage);
         }
-        try {
-            Class.forName(jdbcDriver);
-            remoteConnection = DriverManager.getConnection("jdbc:mysql://34.70.102.41:3306/assignment2_remote", "root1", "root");
-            if (remoteConnection != null) {
-                System.out.println("Remote DB Connected");
-            } else {
-                System.out.println("Remote DB Connection Aborted");
-            }
-        } catch (Exception errorMessage) {
-            System.out.println(errorMessage);
-        }
 
         //Setting autocommit as false
         localConnection.setAutoCommit(false);
         localConnection2.setAutoCommit(false);
-        remoteConnection.setAutoCommit(false);
 
         Statement localStatement = localConnection.createStatement();
         Statement localStatement2 = localConnection2.createStatement();
-        Statement remoteStatement = remoteConnection.createStatement();
         ResultSet localResultSet = null;
         ResultSet localResultSet2 = null;
-        ResultSet remoteResultSet = null;
         String querySequenceOneT1 = "select * from customers where customer_zip_code_prefix= 01151";
         String querySequenceOneT2 = "select * from customers where customer_zip_code_prefix= 01151";
         String querySequenceTwoT1 = "update customers set customer_city = 'T1 City' where customer_zip_code_prefix = 01151;";
